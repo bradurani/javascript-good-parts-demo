@@ -1,6 +1,10 @@
 //Constructor simple
 var Car = function(){ };
 
+Car.prototype.getGoing = function() {
+	console.log("Vroooooom!");
+}
+
 Car.prototype.honk = function() {
 	console.log("Meep Meep");
 };
@@ -30,10 +34,10 @@ console.log(my_quo.get_status()); //bork
 var Jalopy = function(){};
 Jalopy.prototype = new Car();
 Jalopy.prototype.honk = function() {
-	console.log("Auuuuuuuuggggaaa!");
-};
+ 	console.log("Auuuuuuuuggggaaa!");
+ };
 var juneysCar = new Jalopy();
-juneysCar.honk();
+juneysCar.honk(); //Auuuuuugggaaa!
 
 //---Create a new constructor from a prototype---
 if(typeof Object.createConstructor !== 'function') {
@@ -50,7 +54,7 @@ Dusenberg.prototype.honk = function() {
 	console.log("Dussel Dussel Dussel");
 }
 dusenberg = new Dusenberg();
-dusenberg.honk();
+dusenberg.honk(); //Dussel Dussel Dussel
 
 
 //---Create a new object from a prototype
@@ -75,11 +79,11 @@ var burrito = {
 	}
 };
 
-burrito.getEaten();
+burrito.getEaten(); //Non non nom eat my Steak
 
 chickenBurrito = Object.create(burrito);
 chickenBurrito.type = "Chicken";
-chickenBurrito.getEaten();
+chickenBurrito.getEaten(); //Non nom nom, eat my Chicken
 
 console.log("\n-------");
 for(prop in chickenBurrito) {
@@ -114,9 +118,18 @@ console.log("-------\n");
  	return Math[this < 0 ? 'ceil' : 'floor'](this); //cool example of using string accessors instead of .property
  });
 
+ console.log(5.55.toInt())
+
 String.method('trim', function() {
 	return this.replace(/^\s+|+$/g, '');
 });
+
+
+
+console.log(5.2345345.toInt())
+
+console.log("    bradurani@gmail.com \n\r   ".trim())
+
 console.log(parseInt("  5  ".trim()).toInt());
 
 
@@ -141,7 +154,7 @@ var quo = function(status) {
 };
 
 var myQuo = quo("amazed");
-console.log(myQuo.get_status());
+console.log(myQuo.get_status()); //amazed
 
 
 //-----------another closure-----------
@@ -182,6 +195,26 @@ var arrayOfExpFunctions = (function() {
 var mammal = function(spec) {
 	var that = {};
 
+	/* private methods */
+	function findCave() {
+		console.log('Looks cozy in here');
+	}
+
+	function sleepAlot() {
+		console.log('zzzzz');
+	}
+
+	function wakeUp() {
+		console.log("spring finally!");
+	}
+
+	/* public methods */
+	that.hibernate = function() {
+		findCave();
+		sleepAlot();
+		wakeUp();
+	}
+
 	//required constructor arg
 	that.get_name = function() {
 		return spec.name
@@ -207,6 +240,13 @@ var kangaroo = mammal({
 });
 
 console.log("Name: " + kangaroo.get_name() + " Says: " + kangaroo.says());
+console.log(kangaroo.hibernate());
+
+try {
+	console.sleepAlot(); //throw error
+} catch (e) {
+	console.log(e);
+}
 
 //-------sub class-------//
 var cat = function(spec) {
@@ -233,23 +273,45 @@ heathcliff = cat({ name : "Heathcliff" });
 console.log(heathcliff.purr());
 console.log(heathcliff.get_name());
 
+var meow = function() {
+	console.log("meow");
+}
+
+meow();
+
+function meow() {
+	console.log("meow");
+}
+
+meow();
+
+//awful parts:
+///GLOBAL VARIABLES
+foo = "bar"; //global
+var foo = "bar";
 
 
-// //awful parts:
-// ///GLOBAL VARIABLES
-// foo = "bar"; //global
-// var foo = "bar";
+var bleh = "hmmm" //semi-colon inserted here
+var anotherbleh = "yummy";
 
-// //Semicolon Insertion
-// return   //returns undefined
-// {
-// 	status: true
-// }
+function wrong() {
+	return   //semi-colon inserted here. returns undefined
+	{
+		status: true
+	};
+}
 
-// //correct
-// return {
-// 	status: true
-// };
+console.log(wrong()); //undefined
+
+//correct
+function right() {
+	return {
+		status: true
+	};
+}
+
+console.log(right());
+
 
 // //parseInt has errors
 // parseInt("16") ==
