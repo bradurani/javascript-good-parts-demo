@@ -312,9 +312,164 @@ function right() {
 
 console.log(right());
 
+var Obj = function(path) {
+			var self = this;
+
+			var docRoot = path;
+			
+			console.log(self);
+			
+			self.color = "red";
+			self.count = 0;
+
+			this.validateDocRoot = function(val) {
+
+			};
+
+			this.setDocRoot = function(val) {
+				self.validateDocRoot(val);
+				docRoot = val;
+			};
+
+			this.getDocRoot = function() {
+				return docRoot;
+			};
+
+			this.increment = function() {
+				return self.count++;
+			}
+};
+
+
+var Obj = function() {
+	return function(path) {
+			var self = this;
+
+			var docRoot = path;
+			
+			console.log(self);
+			
+			self.color = "red";
+			self.count = 0;
+
+			this.validateDocRoot = function(val) {
+
+			};
+
+			this.setDocRoot = function(val) {
+				self.validateDocRoot(val);
+				docRoot = val;
+			};
+
+			this.getDocRoot = function() {
+				return docRoot;
+			};
+
+			this.increment = function() {
+				return self.count++;
+			}
+	};
+}());
+
+var Obj = function(path) {
+			var instance = {};
+
+			var docRoot = path;
+			
+			console.log(self);
+			
+			instance.color = "red";
+			self.count = 0;
+
+			instance.validateDocRoot = function(val) {
+
+			};
+
+			instance.setDocRoot = function(val) {
+				self.validateDocRoot(val);
+				docRoot = val;
+			};
+
+			instance.getDocRoot = function() {
+				return docRoot;
+			};
+
+			instance.increment = function() {
+				return instance.count++;
+			}
+};
+
+
+var obj = new Obj("/root");
+console.log(obj.getDocRoot())
+var inc = obj.increment //'this' no refers to window, but we're ok
+//$(".btn").click(obj.increment); //real world example where it matters
+//$(".btn").click(obj.increment.bind(obj)) //other option if you're not sure whether 'this' is safely scoped
+inc(); //0
+inc(); //1
+inc(); //2
 
 // //parseInt has errors
-// parseInt("16") ==
+console.log(parseInt("16 tons") == 16) //true
+
+//factory pattern:
+// parent constructor
+function AutoFactory() {}
+ 
+//override toString()
+AutoFactory.prototype.toString = function () {
+    return "I have " + this.numberOfHorses + " horses under the hood.";
+};
+ 
+AutoFactory.prototype.drive = function () {
+    return "Vroom!";
+};
+ 
+// the static factory method
+AutoFactory.build = function (constr) {
+    // Throw an error if no constructor for the given automobile
+    if (typeof AutoFactory[constr] !== "function") {
+        throw {
+            name:    "AutoFactoryError",
+            message: "You cannot create " + constr + " automobiles in this factory"
+        };
+    }
+     
+    for (var fn in AutoFactory.prototype) {
+      // Here, the method borrowing technique is used to 
+      // selectively inherit from the AutoFactory
+      if (  typeof AutoFactory[constr].prototype[fn] !== "function"
+         || AutoFactory[constr].prototype[fn].toString().indexOf('[native code]') > -1 ) {
+          AutoFactory[constr].prototype[fn] = AutoFactory.prototype[fn];
+      }
+    }
+    // create a new automobile using the factory
+    return new AutoFactory[constr]();
+};
+ 
+// define specific animal makers
+AutoFactory.Prius = function () {
+    this.numberOfHorses = 110;
+};
+AutoFactory.G35 = function () {
+    this.numberOfHorses = 306;
+};
+AutoFactory.Porsche = function () {
+    this.numberOfHorses = 400;
+};
+AutoFactory.Porsche.prototype.toString = function () {
+  return "I have my own toString() method.";
+};              
+ 
+var prius = AutoFactory.build('Prius');
+var g35 = AutoFactory.build('G35');
+var porsche = AutoFactory.build('Porsche');
+alert(prius); // "I have 110 horses under the hood."
+alert(prius.drive()); // "Vroom!"
+alert(g35); // "I have 306 horses under the hood."
+alert(g35.drive()); // "Vroom!"
+alert(porsche); // "I have my own toString() method."
+alert(porsche.drive()); // "Vroom!"
 
 
 
